@@ -239,22 +239,22 @@ public class TA extends JFrame {
 				if (cekXkiri()) {
 					x -= 5;
 				}
-			} else if (key == KeyEvent.VK_Q) {		// key listener diagonal menggunakan qwas
+			} else if (key == KeyEvent.VK_Q) {		// key listener diagonal kiri atas
 				if(cekYatas() && cekXkiri()) {
 					x -= 5;
 					y -= 5;
 				}
-			} else if (key == KeyEvent.VK_W) {
+			} else if (key == KeyEvent.VK_W) {		// key listener diagonal kanan atas
 				if(cekYatas() && cekXkanan()) {
 					x += 5;
 					y -= 5;
 				}
-			} else if (key == KeyEvent.VK_A) {
+			} else if (key == KeyEvent.VK_A) {		// key listener diagonal kiri bawah
 				if(cekYbawah() && cekXkiri()) {
 					x -= 5;
 					y += 5;
 				}
-			} else if (key == KeyEvent.VK_S) {
+			} else if (key == KeyEvent.VK_S) {		// key listener diagonal kanan bawah
 				if(cekYbawah() && cekXkanan()) {
 					x += 5;
 					y += 5;
