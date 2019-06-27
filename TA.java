@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
+///test git vieri
 public class TA extends JFrame {
 	// data member //
 	private GridBagConstraints grid;
@@ -238,7 +238,7 @@ public class TA extends JFrame {
 			} else if (key == KeyEvent.VK_LEFT) {
 				if (cekXkiri()) {
 					x -= 5;
-				}
+				} 
 			} else if (key == KeyEvent.VK_Q) {		// key listener diagonal kiri atas
 				if(cekYatas() && cekXkiri()) {
 					x -= 5;
