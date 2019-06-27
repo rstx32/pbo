@@ -203,11 +203,15 @@ public class TA extends JFrame {
 				int jarakY = CANVAS_HEIGHT / 2 - y;
 				y = (CANVAS_HEIGHT / 2 + jarakY) - LEBAR;
 			} else if (baca.equals("Fade In")) {
-				PANJANG += 5;
-				LEBAR += 5;
+				PANJANG += 4;
+				LEBAR += 4;
+				x -= 2;		// set agar fade bergerak dari semua sisi
+				y-= 2;		// -^
 			} else if (baca.equals("Fade Out")) {
-				PANJANG -= 5;
-				LEBAR -= 5;
+				PANJANG -= 4;
+				LEBAR -= 4;
+				x += 2;		// set agar fade bergerak dari semua sisi
+				y += 2;		// -^
 			} else if (baca.equals("Ganti Warna Objek")) {
 				Color color=JColorChooser.showDialog(TA.this, "Pilih Warna", warnaObjek);
 				if(color!=null) {
