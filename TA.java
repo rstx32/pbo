@@ -169,25 +169,33 @@ public class TA extends JFrame {
 			// TODO Auto-generated method stub
 			String baca = e.getActionCommand();
 			if (baca.equals("Keatas")) {
-				y -= 5;
+				if(cekYatas()) y -= 5;
 			} else if (baca.equals("Kebawah")) {
-				y += 5;
+				if(cekYbawah()) y += 5;
 			} else if (baca.equals("Kekanan")) {
-				x += 5;
+				if(cekXkanan()) x += 5;
 			} else if (baca.equals("Kekiri")) {
-				x -= 5;
+				if(cekXkiri()) x -= 5;
 			} else if (baca.equals("Kiri Atas")) {
-				x -= 5;
-				y -= 5;
+				if(cekXkiri() && cekYatas()) {
+					x -= 5;
+					y -= 5;
+				}				
 			} else if (baca.equals("Kanan Atas")) {
-				x += 5;
-				y -= 5;
+				if(cekYatas() && cekXkanan()) {
+					x += 5;
+					y -= 5;
+				}
 			} else if (baca.equals("Kiri Bawah")) {
-				x -= 5;
-				y += 5;
+				if(cekXkiri() && cekYbawah()) {
+					x -= 5;
+					y += 5;
+				}
 			} else if (baca.equals("Kanan Bawah")) {
-				x += 5;
-				y += 5;
+				if(cekXkanan() && cekYbawah()) {
+					x += 5;
+					y += 5;
+				}
 			} else if (baca.equals("Flip Horizontal")) {
 				int jarakX = CANVAS_WIDTH / 2 - x;
 				x = (CANVAS_WIDTH / 2 + jarakX) - PANJANG;
@@ -299,7 +307,7 @@ public class TA extends JFrame {
 	}
 
 	public boolean cekYbawah() {
-		return (y < CANVAS_HEIGHT - HEIGHT);
+		return (y < CANVAS_HEIGHT - PANJANG);
 	}
 
 	public boolean cekXkiri() {
@@ -307,7 +315,7 @@ public class TA extends JFrame {
 	}
 
 	public boolean cekXkanan() {
-		return (x < CANVAS_WIDTH - WIDTH);
+		return (x < CANVAS_WIDTH - LEBAR);
 	}
 
 	// mengeset textfield x & y dan repaint
