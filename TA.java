@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-///test git vieri
+
 public class TA extends JFrame {
 	// data member //
 	private GridBagConstraints grid;
