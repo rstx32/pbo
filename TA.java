@@ -299,7 +299,7 @@ public class TA extends JFrame {
 	}
 
 	public boolean cekYbawah() {
-		return (y < CANVAS_HEIGHT - 40);
+		return (y < CANVAS_HEIGHT - HEIGHT);
 	}
 
 	public boolean cekXkiri() {
@@ -307,7 +307,7 @@ public class TA extends JFrame {
 	}
 
 	public boolean cekXkanan() {
-		return (x < CANVAS_WIDTH - 40);
+		return (x < CANVAS_WIDTH - WIDTH);
 	}
 
 	// mengeset textfield x & y dan repaint
