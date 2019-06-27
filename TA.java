@@ -14,7 +14,7 @@ public class TA extends JFrame {
 	private int LEBAR = 40;
 	// button
 	private JButton keatas, kebawah, kekanan, kekiri, kiriAtas, kiriBawah, kananAtas, kananBawah,
-					flipV, flipH, zoomIn, zoomOut, gantiWarnaObjek, gantiWarnaBackground;
+					flipV, flipH, fadeIn, fadeOut, gantiWarnaObjek, gantiWarnaBackground;
 	// label
 	private JLabel labelX, labelY;
 	// panel
@@ -58,8 +58,8 @@ public class TA extends JFrame {
 		gantiWarnaObjek = new JButton("Ganti Warna");
 		flipV = new JButton("Flip Vertikal");
 		flipH = new JButton("Flip Horizontal");
-		zoomIn = new JButton("Zoom In");
-		zoomOut = new JButton("Zoom Out");
+		fadeIn = new JButton("Fade In");
+		fadeOut = new JButton("Fade Out");
 		gantiWarnaObjek = new JButton("Ganti Warna Objek");
 		gantiWarnaBackground= new JButton("Ganti Warna Background");
 		
@@ -84,8 +84,8 @@ public class TA extends JFrame {
 		btnPanel3.add(kiriBawah);
 		btnPanel3.add(kananAtas);
 		btnPanel3.add(kananBawah);	
-		btnPanel4.add(zoomIn);
-		btnPanel4.add(zoomOut);
+		btnPanel4.add(fadeIn);
+		btnPanel4.add(fadeOut);
 		panelWarna.add(gantiWarnaObjek);
 		panelWarna.add(gantiWarnaBackground);
 
@@ -117,8 +117,8 @@ public class TA extends JFrame {
 			flipH.addActionListener(btnlistener);
 			
 			// button zoom
-			zoomIn.addActionListener(btnlistener);
-			zoomOut.addActionListener(btnlistener);
+			fadeIn.addActionListener(btnlistener);
+			fadeOut.addActionListener(btnlistener);
 			
 			// button gantiwarna
 			gantiWarnaObjek.addActionListener(btnlistener);
@@ -194,10 +194,10 @@ public class TA extends JFrame {
 			} else if (baca.equals("Flip Vertikal")) {
 				int jarakY = CANVAS_HEIGHT / 2 - y;
 				y = (CANVAS_HEIGHT / 2 + jarakY) - LEBAR;
-			} else if (baca.equals("Zoom In")) {
+			} else if (baca.equals("Fade In")) {
 				PANJANG += 5;
 				LEBAR += 5;
-			} else if (baca.equals("Zoom Out")) {
+			} else if (baca.equals("Fade Out")) {
 				PANJANG -= 5;
 				LEBAR -= 5;
 			} else if (baca.equals("Ganti Warna Objek")) {
