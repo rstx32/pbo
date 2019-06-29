@@ -128,13 +128,13 @@ public class TA extends JFrame {
 		MouseListener mouse = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				x=e.getX();
-				y=e.getY();
+				x=e.getX()-25;
+				y=e.getY()-50;
 				execute();
 			}
 		};
 		addMouseListener(mouse);
-		
+
 		// menambahkan panel dan canvas ke dalam gridbaglayout
         grid.gridx = 0;
         grid.gridy = 0;
