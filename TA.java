@@ -124,6 +124,16 @@ public class TA extends JFrame {
 			gantiWarnaObjek.addActionListener(btnlistener);
 			gantiWarnaBackground.addActionListener(btnlistener);
 		
+		//menambahkan mouse listener menggunakan mouse adapter
+		MouseListener mouse = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				x=e.getX();
+				y=e.getY();
+				execute();
+			}
+		};
+		
 		// menambahkan panel dan canvas ke dalam gridbaglayout
         grid.gridx = 0;
         grid.gridy = 0;
