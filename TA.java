@@ -133,6 +133,7 @@ public class TA extends JFrame {
 				execute();
 			}
 		};
+		addMouseListener(mouse);
 		
 		// menambahkan panel dan canvas ke dalam gridbaglayout
         grid.gridx = 0;
