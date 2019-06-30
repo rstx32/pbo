@@ -10,28 +10,34 @@ public class TA extends JFrame {
 	private static final int CANVAS_WIDTH = 640;
 	private static final int CANVAS_HEIGHT = 480;
 	// mengeset ukuran objek
-	private int PANJANG = 40;
-	private int LEBAR = 40;
+	private int PANJANG1 = 40;
+	private int LEBAR1 = 40;
+	private int PANJANG2=40;
+	private int LEBAR2=40;
 	// button
 	private JButton keatas, kebawah, kekanan, kekiri, kiriAtas, kiriBawah, kananAtas, kananBawah,
-					flipV, flipH, fadeIn, fadeOut, gantiWarnaObjek, gantiWarnaBackground;
+					flipV, flipH, fadeIn, fadeOut, gantiWarnaObjek, gantiWarnaBackground,objek1,tambahObjek;
 	// label
-	private JLabel labelX, labelY;
+	private JLabel labelX1, labelY1,labelX2, labelY2;
 	// panel
-	private JPanel btnPanel1, btnPanel2, btnPanel3, btnPanel4, infopanel, panelWarna;
+	private JPanel btnPanel1, btnPanel2, btnPanel3, btnPanel4, infopanel, panelWarna, pilihObjek;
 	// textfield
-	private JTextField tfx, tfy;
+	private JTextField tfx1, tfy1,tfx2,tfy2;
 	// mengeset posisi awal objek agar di tengah
 	// mengeset point x&y tidak di tengah, namun geser ke kiri atas supaya objek berada tepat di tengah
 	// karena kalau point di tengah maka objek menjadi geser ke kanan bawah sesuai dengan point yaitu titik tengah 
-	private int y = (CANVAS_HEIGHT / 2) - (LEBAR / 2);		
-	private int x = (CANVAS_WIDTH / 2) - (PANJANG / 2);
+	private int y1 = (CANVAS_HEIGHT / 2) - (LEBAR1 / 2);		
+	private int x1 = (CANVAS_WIDTH / 2) - (PANJANG1 / 2);
+	private int y2 = y1;		
+	private int x2 = x1+100;
 	// default value warna untuk objek dan background
-	private Color warnaObjek = Color.RED;
+	private Color warnaObjek1 = Color.RED,warnaObjek2 = Color.RED;
 	private Color warnaBackground = Color.BLACK;
-
+	//boolean untuk memilih objek dan memulai program
+	private boolean objekSatu,objekDua,cekObjek;
 	// konstruktor
 	public TA() {
+	
 		// inisiasi
 		grid = new GridBagConstraints();
 		setLayout(new GridBagLayout());
@@ -41,11 +47,15 @@ public class TA extends JFrame {
 		btnPanel2 = new JPanel();
 		btnPanel3 = new JPanel();
 		btnPanel4 = new JPanel();
+		pilihObjek=new JPanel();
 		infopanel = new JPanel();
 		panelWarna = new JPanel();
 		btnListener btnlistener = new btnListener();
 		keyListener keylistener = new keyListener();
-
+		objekSatu=new Boolean(true);
+		objekDua=new Boolean(false);
+		cekObjek=new Boolean(false);
+		
 		// inisiasi nama button
 		keatas = new JButton("Keatas");
 		kebawah = new JButton("Kebawah");
@@ -60,18 +70,26 @@ public class TA extends JFrame {
 		flipH = new JButton("Flip Horizontal");
 		fadeIn = new JButton("Fade In");
 		fadeOut = new JButton("Fade Out");
+		objek1=new JButton("Pilih Objek 1");
+		tambahObjek=new JButton("Tambah Objek");
 		gantiWarnaObjek = new JButton("Ganti Warna Objek");
 		gantiWarnaBackground= new JButton("Ganti Warna Background");
 		
 		// label
-		labelX = new JLabel("X = ");
-		labelY = new JLabel("Y = ");
+		labelX1 = new JLabel("X 1 = ");
+		labelY1 = new JLabel("Y 1 = ");
+		labelX2 = new JLabel("X 2 = ");
+		labelY2 = new JLabel("Y 2 = ");
 		
 		// textfield
-		tfx = new JTextField("        ");
-		tfx.setEditable(false);
-		tfy = new JTextField("        ");
-		tfy.setEditable(false);
+		tfx1 = new JTextField("        ");
+		tfx1.setEditable(false);
+		tfy1 = new JTextField("        ");
+		tfy1.setEditable(false);
+		tfx2 = new JTextField("        ");
+		tfx2.setEditable(false);
+		tfy2 = new JTextField("        ");
+		tfy2.setEditable(false);
  
 		// menambah button ke dalam panel
 		btnPanel1.add(keatas);
@@ -86,14 +104,20 @@ public class TA extends JFrame {
 		btnPanel3.add(kananBawah);	
 		btnPanel4.add(fadeIn);
 		btnPanel4.add(fadeOut);
+		pilihObjek.add(objek1);
+		pilihObjek.add(tambahObjek);
 		panelWarna.add(gantiWarnaObjek);
 		panelWarna.add(gantiWarnaBackground);
 
 		// menambah label dan textfield ke dalam panel bawah untuk menampilkan koordinat
-		infopanel.add(labelX);
-		infopanel.add(tfx);
-		infopanel.add(labelY);
-		infopanel.add(tfy);
+		infopanel.add(labelX1);
+		infopanel.add(tfx1);
+		infopanel.add(labelY1);
+		infopanel.add(tfy1);
+		infopanel.add(labelX2);
+		infopanel.add(tfx2);
+		infopanel.add(labelY2);
+		infopanel.add(tfy2);
 
 		// menambah listener ke dalam button
 			// button arrow
@@ -120,6 +144,10 @@ public class TA extends JFrame {
 			fadeIn.addActionListener(btnlistener);
 			fadeOut.addActionListener(btnlistener);
 			
+			//button tambah objek dan pilih objek
+			objek1.addActionListener(btnlistener);
+			tambahObjek.addActionListener(btnlistener);
+			
 			// button gantiwarna
 			gantiWarnaObjek.addActionListener(btnlistener);
 			gantiWarnaBackground.addActionListener(btnlistener);
@@ -128,13 +156,18 @@ public class TA extends JFrame {
 		MouseListener mouse = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				x=e.getX()-25;
-				y=e.getY()-50;
+				if(objekSatu==true) {
+					x1=e.getX()-25;
+					y1=e.getY()-50;
+				}else if(objekDua==true) {
+					x2=e.getX()-25;
+					y2=e.getY()-50;
+				}
 				execute();
 			}
 		};
 		addMouseListener(mouse);
-
+		
 		// menambahkan panel dan canvas ke dalam gridbaglayout
         grid.gridx = 0;
         grid.gridy = 0;
@@ -158,10 +191,18 @@ public class TA extends JFrame {
         
         grid.gridx = 0;
         grid.gridy = 5;
-        add(panelWarna, grid); 
+        add(pilihObjek, grid);  
         
         grid.gridx = 0;
         grid.gridy = 6;
+        add(panelWarna, grid); 
+        
+        grid.gridx = 0;
+        grid.gridy = 7;
+        add(infopanel, grid);
+        
+        grid.gridx = 0;
+        grid.gridy = 7;
         add(infopanel, grid);
         
 		// mengeset JFrame
@@ -180,59 +221,157 @@ public class TA extends JFrame {
 			// TODO Auto-generated method stub
 			String baca = e.getActionCommand();
 			if (baca.equals("Keatas")) {
-				if(cekYatas()) y -= 5;
+				if(cekYatas()) {
+					if (objekSatu==true) {
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						y2 -= 5;
+					}
+				}
 			} else if (baca.equals("Kebawah")) {
-				if(cekYbawah()) y += 5;
+				if(cekYbawah()) {
+					if (objekSatu==true) {
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						y2 += 5;
+					}
+				}
 			} else if (baca.equals("Kekanan")) {
-				if(cekXkanan()) x += 5;
+				if(cekXkanan()) {
+					if (objekSatu==true) {
+						x1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+					}
+				}
 			} else if (baca.equals("Kekiri")) {
-				if(cekXkiri()) x -= 5;
+				if(cekXkiri()) {
+					if (objekSatu==true) {
+						x1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+					}
+				}
 			} else if (baca.equals("Kiri Atas")) {
 				if(cekXkiri() && cekYatas()) {
-					x -= 5;
-					y -= 5;
+					if (objekSatu==true) {
+						x1 -= 5;
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+						y2 -= 5;
+					}
 				}				
 			} else if (baca.equals("Kanan Atas")) {
 				if(cekYatas() && cekXkanan()) {
-					x += 5;
-					y -= 5;
+					if (objekSatu==true) {
+						x1 += 5;
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+						y2 -= 5;
+					}
 				}
 			} else if (baca.equals("Kiri Bawah")) {
 				if(cekXkiri() && cekYbawah()) {
-					x -= 5;
-					y += 5;
+					if (objekSatu==true) {
+						x1 -= 5;
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+						y2 += 5;
+					}
 				}
 			} else if (baca.equals("Kanan Bawah")) {
 				if(cekXkanan() && cekYbawah()) {
-					x += 5;
-					y += 5;
+					if (objekSatu==true) {
+						x1 += 5;
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+						y2 += 5;
+					}
 				}
 			} else if (baca.equals("Flip Horizontal")) {
-				int jarakX = CANVAS_WIDTH / 2 - x;
-				x = (CANVAS_WIDTH / 2 + jarakX) - PANJANG;
+				if(objekSatu==true) {
+					int jarakX = CANVAS_WIDTH / 2 - x1;
+					x1 = (CANVAS_WIDTH / 2 + jarakX) - PANJANG1;
+				}
+				else if(objekDua==true) {
+					int jarakX = CANVAS_WIDTH / 2 - x2;
+					x2 = (CANVAS_WIDTH / 2 + jarakX) - PANJANG2;
+				}
 			} else if (baca.equals("Flip Vertikal")) {
-				int jarakY = CANVAS_HEIGHT / 2 - y;
-				y = (CANVAS_HEIGHT / 2 + jarakY) - LEBAR;
+				if(objekSatu==true) {
+					int jarakY = CANVAS_HEIGHT / 2 - y1;
+					y1 = (CANVAS_HEIGHT / 2 + jarakY) - LEBAR1;
+				}
+				else if(objekDua==true) {
+					int jarakY = CANVAS_HEIGHT / 2 - y2;
+					y2 = (CANVAS_HEIGHT / 2 + jarakY) - LEBAR2;
+				}
 			} else if (baca.equals("Fade In")) {
-				PANJANG += 4;
-				LEBAR += 4;
-				x -= 2;		// set agar fade bergerak dari semua sisi
-				y-= 2;		// -^
+				if(objekSatu==true) {
+					PANJANG1 += 4;
+					LEBAR1 += 4;
+					x1 -= 2;		// set agar fade bergerak dari semua sisi
+					y1 -= 2;		// -^
+				}else if(objekDua==true) {
+					PANJANG2 += 4;
+					LEBAR2 += 4;
+					x2 -= 2;		// set agar fade bergerak dari semua sisi
+					y2 -= 2;		// -^
+				}
 			} else if (baca.equals("Fade Out")) {
-				PANJANG -= 4;
-				LEBAR -= 4;
-				x += 2;		// set agar fade bergerak dari semua sisi
-				y += 2;		// -^
+				if(objekSatu==true) {
+					PANJANG1 -= 4;
+					LEBAR1 -= 4;
+					x1 += 2;		// set agar fade bergerak dari semua sisi
+					y1 += 2;		// -^
+				}else if(objekDua==true) {
+					PANJANG2 -= 4;
+					LEBAR2 -= 4;
+					x2 += 2;		// set agar fade bergerak dari semua sisi
+					y2 += 2;		// -^
+				}
+				
 			} else if (baca.equals("Ganti Warna Objek")) {
-				Color color=JColorChooser.showDialog(TA.this, "Pilih Warna", warnaObjek);
-				if(color!=null) {
-					warnaObjek=color;
+				if(objekSatu==true) {
+					Color color=JColorChooser.showDialog(TA.this, "Pilih Warna Objek 1", warnaObjek1);
+					if(color!=null) {
+						warnaObjek1=color;
+					}
+				}
+				else if(objekDua==true) {
+					Color color=JColorChooser.showDialog(TA.this, "Pilih Warna Objek 2", warnaObjek2);
+					if(color!=null) {
+						warnaObjek2=color;
+					}
 				}
 			} else if (baca.equals("Ganti Warna Background")) {
 				Color color=JColorChooser.showDialog(TA.this, "Pilih Warna", warnaBackground);
 				if(color!=null) {
 					warnaBackground=color;
 				}
+			}else if(baca.equals("Pilih Objek 1")) {
+				objekSatu=true;
+				objekDua=false;
+			}else if(baca.equals("Tambah Objek")) {
+				objekSatu=false;
+				objekDua=false;
+				cekObjek=true;
+				tambahObjek.setText("Pilih Objek 2");
+			}else if(baca.equals("Pilih Objek 2")) {
+				objekDua=true;
+				objekSatu=false;
 			}
 			execute();
 		}
@@ -246,41 +385,93 @@ public class TA extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_UP) {
+			if(key==KeyEvent.VK_1) {
+				objekSatu=true;
+				objekDua=false;
+			}
+			else if(key ==KeyEvent.VK_2) {
+				objekDua=true;
+				objekSatu=false;
+			}
+			else if (key == KeyEvent.VK_UP) {
 				if (cekYatas()) {
-					y -= 5;
+					if (objekSatu==true) {
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						y2 -= 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_DOWN) {
 				if (cekYbawah()) {
-					y += 5;
+					if (objekSatu==true) {
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						y2 += 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_RIGHT) {
-				if (cekXkanan()) {
-					x += 5;
+				if (cekXkanan()) {			
+					if (objekSatu==true) {
+						x1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_LEFT) {
 				if (cekXkiri()) {
-					x -= 5;
+					if (objekSatu==true) {
+						x1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+					}
 				} 
 			} else if (key == KeyEvent.VK_Q) {		// key listener diagonal kiri atas
 				if(cekYatas() && cekXkiri()) {
-					x -= 5;
-					y -= 5;
+					if (objekSatu==true) {
+						x1 -= 5;
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+						y2 -= 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_W) {		// key listener diagonal kanan atas
 				if(cekYatas() && cekXkanan()) {
-					x += 5;
-					y -= 5;
+					if (objekSatu==true) {
+						x1 += 5;
+						y1 -= 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+						y2 -= 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_A) {		// key listener diagonal kiri bawah
 				if(cekYbawah() && cekXkiri()) {
-					x -= 5;
-					y += 5;
+					if (objekSatu==true) {
+						x1 -= 5;
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 -= 5;
+						y2 += 5;
+					}
 				}
 			} else if (key == KeyEvent.VK_S) {		// key listener diagonal kanan bawah
-				if(cekYbawah() && cekXkanan()) {
-					x += 5;
-					y += 5;
+				if(cekYbawah() && cekXkanan()&&objekSatu==true) {
+					if (objekSatu==true) {
+						x1 += 5;
+						y1 += 5;
+					}
+					else if(objekDua==true) {
+						x2 += 5;
+						y2 += 5;
+					}
 				}
 			}
 			execute();
@@ -292,16 +483,20 @@ public class TA extends JFrame {
 	}
 
 	// class canvas sebagai tempat menaruh objek
-	private class DrawCanvas extends JPanel {
+	public class DrawCanvas extends JPanel {
 		@Override
 		public void paintComponent(Graphics g) {
 			// TODO Auto-generated method stub
 			super.paintComponent(g);
 			setBackground(warnaBackground);
-			g.setColor(warnaObjek);
-			g.fillRect(x, y, PANJANG, LEBAR);
+			g.setColor(warnaObjek1);
+			g.fillRect(x1, y1, LEBAR1,PANJANG1);
 			g.drawLine(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT);
 			g.drawLine(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2);
+			if(cekObjek==true) {
+				g.setColor(warnaObjek2);
+				g.fillRect(x2, y2, LEBAR2, PANJANG2);
+			}
 		}
 	}
 
@@ -318,26 +513,27 @@ public class TA extends JFrame {
 	
 	// mengecek supaya tidak keluar dari canvas
 	public boolean cekYatas() {
-		return (y > 0);
+		return (y1 > 0&& y2 > 0);
 	}
 
 	public boolean cekYbawah() {
-		return (y < CANVAS_HEIGHT - PANJANG);
+		return (y1 < CANVAS_HEIGHT - PANJANG1&&y2 < CANVAS_HEIGHT - PANJANG2);
 	}
 
 	public boolean cekXkiri() {
-		return (x > 0);
+		return (x1 > 0&&x2 > 0);
 	}
 
 	public boolean cekXkanan() {
-		return (x < CANVAS_WIDTH - LEBAR);
+		return (x1 < CANVAS_WIDTH - LEBAR1&&x2 < CANVAS_WIDTH - LEBAR2);
 	}
 
 	// mengeset textfield x & y dan repaint
 	public void execute() {
-		tfx.setText(x + "");
-		tfy.setText(y + "");
+		tfx1.setText(x1 + "");
+		tfy1.setText(y1 + "");
+		tfx2.setText(x2 + "");
+		tfy2.setText(y2 + "");
 		repaint();
 	}
 
-}
