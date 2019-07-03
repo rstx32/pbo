@@ -96,6 +96,7 @@ public class TA extends JFrame {
 		tfy2 = new JTextField("        ");
 		tfy2.setEditable(false);
 		tfObjek = new JTextField("            ");
+		tfObjek.setText("Objek 1");
 		tfObjek.setEditable(false);
 
 		// menambah button ke dalam panel
@@ -443,7 +444,7 @@ public class TA extends JFrame {
 					}
 				}
 			} else if (key == KeyEvent.VK_S) { // key listener diagonal kanan bawah
-				if (cekYbawah() && cekXkanan() && objekSatu == true) {
+				if (cekYbawah() && cekXkanan()) {
 					if (objekSatu == true) {
 						x1 += 5;
 						y1 += 5;
@@ -465,12 +466,18 @@ public class TA extends JFrame {
 	private class mouselistener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			if (objekSatu == true) {
-				x1 = e.getX() - 25;
-				y1 = e.getY() - 50;
-			} else if (objekDua == true) {
-				x2 = e.getX() - 25;
-				y2 = e.getY() - 50;
+			Point posisi = e.getPoint();
+			// memberi kondisi jika posisi kursor tetap berada di dalam kanvas
+			if(posisi.x<CANVAS_WIDTH-PANJANG1 && posisi.y<CANVAS_HEIGHT-LEBAR1) {
+				if (objekSatu == true) {
+					x1 = e.getX() - 25;
+					y1 = e.getY() - 50;
+				} else if (objekDua == true) {
+					x2 = e.getX() - 25;
+					y2 = e.getY() - 50;
+				}
+			}else {
+				
 			}
 			execute();
 		}
