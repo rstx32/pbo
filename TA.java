@@ -16,22 +16,24 @@ public class TA extends JFrame {
 	private int LEBAR2 = 40;
 	// button
 	private JButton keatas, kebawah, kekanan, kekiri, kiriAtas, kiriBawah, kananAtas, kananBawah, flipV, flipH, fadeIn,
-			fadeOut, gantiWarnaObjek, gantiWarnaBackground, objek1, tambahObjek;
+			fadeOut, gantiWarnaObjek, gantiWarnaBackground, objek1, duplikatObjek;
 	// label
-	private JLabel labelX1, labelY1, labelX2, labelY2;
+	private JLabel labelX1, labelY1, labelX2, labelY2, infoPilihObjek;
 	// panel
 	private JPanel btnPanel1, btnPanel2, btnPanel3, btnPanel4, infopanel, panelWarna, pilihObjek;
 	// textfield
-	private JTextField tfx1, tfy1, tfx2, tfy2;
+	private JTextField tfx1, tfy1, tfx2, tfy2, tfObjek;
 	// mengeset posisi awal objek agar di tengah
-	// mengeset point x&y tidak di tengah, namun geser ke kiri atas supaya objek berada tepat di tengah
-	// karena kalau point di tengah maka objek menjadi geser ke kanan bawah sesuai dengan point yaitu titik tengah
+	// mengeset point x&y tidak di tengah, namun geser ke kiri atas supaya objek
+	// berada tepat di tengah
+	// karena kalau point di tengah maka objek menjadi geser ke kanan bawah sesuai
+	// dengan point yaitu titik tengah
 	private int y1 = (CANVAS_HEIGHT / 2) - (LEBAR1 / 2);
 	private int x1 = (CANVAS_WIDTH / 2) - (PANJANG1 / 2);
 	private int y2 = y1;
 	private int x2 = x1 + 100;
 	// default value warna untuk objek dan background
-	private Color warnaObjek1 = Color.RED, warnaObjek2 = Color.RED;
+	private Color warnaObjek1 = Color.RED, warnaObjek2 = Color.BLUE;
 	private Color warnaBackground = Color.BLACK;
 	// boolean untuk memilih objek dan memulai program
 	private boolean objekSatu, objekDua, cekObjek;
@@ -73,15 +75,16 @@ public class TA extends JFrame {
 		fadeIn = new JButton("Fade In");
 		fadeOut = new JButton("Fade Out");
 		objek1 = new JButton("Pilih Objek 1");
-		tambahObjek = new JButton("Tambah Objek");
+		duplikatObjek = new JButton("Duplikat Objek");
 		gantiWarnaObjek = new JButton("Ganti Warna Objek");
 		gantiWarnaBackground = new JButton("Ganti Warna Background");
 
 		// label
-		labelX1 = new JLabel("X 1 = ");
-		labelY1 = new JLabel("Y 1 = ");
-		labelX2 = new JLabel("X 2 = ");
-		labelY2 = new JLabel("Y 2 = ");
+		labelX1 = new JLabel("X1 = ");
+		labelY1 = new JLabel("Y1 = ");
+		labelX2 = new JLabel("X2 = ");
+		labelY2 = new JLabel("Y2 = ");
+		infoPilihObjek = new JLabel("Objek saat ini : ");
 
 		// textfield
 		tfx1 = new JTextField("        ");
@@ -92,6 +95,8 @@ public class TA extends JFrame {
 		tfx2.setEditable(false);
 		tfy2 = new JTextField("        ");
 		tfy2.setEditable(false);
+		tfObjek = new JTextField("            ");
+		tfObjek.setEditable(false);
 
 		// menambah button ke dalam panel
 		btnPanel1.add(keatas);
@@ -107,7 +112,7 @@ public class TA extends JFrame {
 		btnPanel4.add(fadeIn);
 		btnPanel4.add(fadeOut);
 		pilihObjek.add(objek1);
-		pilihObjek.add(tambahObjek);
+		pilihObjek.add(duplikatObjek);
 		panelWarna.add(gantiWarnaObjek);
 		panelWarna.add(gantiWarnaBackground);
 
@@ -116,10 +121,8 @@ public class TA extends JFrame {
 		infopanel.add(tfx1);
 		infopanel.add(labelY1);
 		infopanel.add(tfy1);
-		infopanel.add(labelX2);
-		infopanel.add(tfx2);
-		infopanel.add(labelY2);
-		infopanel.add(tfy2);
+		infopanel.add(infoPilihObjek);
+		infopanel.add(tfObjek);
 
 		// menambah listener ke dalam button
 		// button arrow
@@ -146,14 +149,14 @@ public class TA extends JFrame {
 		fadeIn.addActionListener(btnlistener);
 		fadeOut.addActionListener(btnlistener);
 
-		// button tambah objek dan pilih objek
+		// button Duplikat Objek dan pilih objek
 		objek1.addActionListener(btnlistener);
-		tambahObjek.addActionListener(btnlistener);
+		duplikatObjek.addActionListener(btnlistener);
 
 		// button gantiwarna
 		gantiWarnaObjek.addActionListener(btnlistener);
 		gantiWarnaBackground.addActionListener(btnlistener);
-		
+
 		// menambahkan mouse listener menggunakan mouse adapter
 		addMouseListener(mouselistener);
 
@@ -207,7 +210,7 @@ public class TA extends JFrame {
 	private class btnListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
+
 			String baca = e.getActionCommand();
 			if (baca.equals("Keatas")) {
 				if (cekYatas()) {
@@ -342,14 +345,22 @@ public class TA extends JFrame {
 			} else if (baca.equals("Pilih Objek 1")) {
 				objekSatu = true;
 				objekDua = false;
-			} else if (baca.equals("Tambah Objek")) {
-				objekSatu = false;
-				objekDua = false;
-				cekObjek = true;
-				tambahObjek.setText("Pilih Objek 2");
+				tfObjek.setText("Objek 1");
 			} else if (baca.equals("Pilih Objek 2")) {
 				objekDua = true;
 				objekSatu = false;
+				tfObjek.setText("Objek 2");
+			} else if (baca.equals("Duplikat Objek")) {
+				objekSatu = false;
+				objekDua = true;
+				cekObjek = true;
+				duplikatObjek.setText("Pilih Objek 2");
+				tfObjek.setText("Objek 2");
+				// menambah informasi label dan textfield objek ke-2 ketika button di klik
+				infopanel.add(labelX2);
+				infopanel.add(tfx2);
+				infopanel.add(labelY2);
+				infopanel.add(tfy2);
 			}
 			execute();
 		}
@@ -358,8 +369,7 @@ public class TA extends JFrame {
 	// class keyListener sebagai listener keyboard
 	private class keyListener implements KeyListener {
 		@Override
-		public void keyTyped(KeyEvent e) {
-		}
+		public void keyTyped(KeyEvent e) {}
 
 		@Override
 		public void keyPressed(KeyEvent e) {
@@ -447,12 +457,12 @@ public class TA extends JFrame {
 		}
 
 		@Override
-		public void keyReleased(KeyEvent e) {
-		}
+		public void keyReleased(KeyEvent e) {}
 
 	}
-	
-	private class mouselistener implements MouseListener{
+
+	// class mouselistener
+	private class mouselistener implements MouseListener {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (objekSatu == true) {
@@ -467,10 +477,13 @@ public class TA extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {}
+
 		@Override
 		public void mouseReleased(MouseEvent e) {}
+
 		@Override
 		public void mouseEntered(MouseEvent e) {}
+
 		@Override
 		public void mouseExited(MouseEvent e) {}
 	}
@@ -479,7 +492,7 @@ public class TA extends JFrame {
 	public class DrawCanvas extends JPanel {
 		@Override
 		public void paintComponent(Graphics g) {
-			// TODO Auto-generated method stub
+
 			super.paintComponent(g);
 			setBackground(warnaBackground);
 			g.setColor(warnaObjek1);
@@ -498,7 +511,6 @@ public class TA extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				TA apps = new TA();
 			}
 		});
