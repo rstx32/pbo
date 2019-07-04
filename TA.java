@@ -1,5 +1,8 @@
+package PBO11_nomer_2;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Ellipse2D;
+
 import javax.swing.*;
 
 public class TA extends JFrame {
@@ -16,11 +19,11 @@ public class TA extends JFrame {
 	private int LEBAR2 = 40;
 	// button
 	private JButton keatas, kebawah, kekanan, kekiri, kiriAtas, kiriBawah, kananAtas, kananBawah, flipV, flipH, fadeIn,
-			fadeOut, gantiWarnaObjek, gantiWarnaBackground, objek1, duplikatObjek;
+			fadeOut, gantiWarnaObjek, gantiWarnaBackground, objek1, duplikatObjek, kotak, lingkaran, ppanjang;
 	// label
 	private JLabel labelX1, labelY1, labelX2, labelY2, infoPilihObjek;
 	// panel
-	private JPanel btnPanel1, btnPanel2, btnPanel3, btnPanel4, infopanel, panelWarna, pilihObjek;
+	private JPanel btnPanel1, btnPanel2, btnPanel3, btnPanel4, infopanel, panelWarna, pilihObjek, gantiShape;
 	// textfield
 	private JTextField tfx1, tfy1, tfx2, tfy2, tfObjek;
 	// mengeset posisi awal objek agar di tengah
@@ -36,7 +39,7 @@ public class TA extends JFrame {
 	private Color warnaObjek1 = Color.RED, warnaObjek2 = Color.BLUE;
 	private Color warnaBackground = Color.BLACK;
 	// boolean untuk memilih objek dan memulai program
-	private boolean objekSatu, objekDua, cekObjek, cekTabrak;
+	private boolean objekSatu, objekDua, cekObjek, cekTabrak, cekKotak, cekLingkaran, cekPPanjang;
 
 	// konstruktor
 	public TA() {
@@ -53,6 +56,7 @@ public class TA extends JFrame {
 		pilihObjek = new JPanel();
 		infopanel = new JPanel();
 		panelWarna = new JPanel();
+		gantiShape=new JPanel();
 		btnListener btnlistener = new btnListener();
 		keyListener keylistener = new keyListener();
 		MouseListener mouselistener = new mouselistener();
@@ -60,6 +64,9 @@ public class TA extends JFrame {
 		objekDua = new Boolean(false);
 		cekObjek = new Boolean(false);
 		cekTabrak=new Boolean(false);
+		cekKotak=new Boolean(true);
+		cekLingkaran=new Boolean(false);
+		cekPPanjang=new Boolean(false);
 		
 		// inisiasi nama button
 		keatas = new JButton("Keatas");
@@ -79,7 +86,10 @@ public class TA extends JFrame {
 		duplikatObjek = new JButton("Duplikat Objek");
 		gantiWarnaObjek = new JButton("Ganti Warna Objek");
 		gantiWarnaBackground = new JButton("Ganti Warna Background");
-
+		kotak=new JButton("Kotak");
+		lingkaran=new JButton("Lingkaran");
+		ppanjang=new JButton("Persegi Panjang");
+		
 		// label
 		labelX1 = new JLabel("X1 = ");
 		labelY1 = new JLabel("Y1 = ");
@@ -117,6 +127,9 @@ public class TA extends JFrame {
 		pilihObjek.add(duplikatObjek);
 		panelWarna.add(gantiWarnaObjek);
 		panelWarna.add(gantiWarnaBackground);
+		gantiShape.add(kotak);
+		gantiShape.add(lingkaran);
+		gantiShape.add(ppanjang);
 
 		// menambah label dan textfield ke dalam panel bawah untuk menampilkan koordinat
 		infopanel.add(labelX1);
@@ -158,12 +171,17 @@ public class TA extends JFrame {
 		// button gantiwarna
 		gantiWarnaObjek.addActionListener(btnlistener);
 		gantiWarnaBackground.addActionListener(btnlistener);
-
+		
+		//button ganti shape
+		kotak.addActionListener(btnlistener);
+		lingkaran.addActionListener(btnlistener);
+		ppanjang.addActionListener(btnlistener);
+		
 		// menambahkan mouse listener menggunakan mouse adapter
 		addMouseListener(mouselistener);
 
 		// menambahkan panel dan canvas ke dalam gridbaglayout
-		grid.gridx = 0;
+		grid.gridx = 1;
 		grid.gridy = 0;
 		add(canvas, grid);
 
@@ -183,21 +201,22 @@ public class TA extends JFrame {
 		grid.gridy = 4;
 		add(btnPanel4, grid);
 
-		grid.gridx = 0;
-		grid.gridy = 5;
+		grid.gridx = 1;
+		grid.gridy = 1;
 		add(pilihObjek, grid);
 
-		grid.gridx = 0;
-		grid.gridy = 6;
+		grid.gridx = 1;
+		grid.gridy = 2;
 		add(panelWarna, grid);
-
-		grid.gridx = 0;
-		grid.gridy = 7;
+		
+		grid.gridx = 1;
+		grid.gridy = 3;
+		add(gantiShape, grid);
+		
+		grid.gridx = 1;
+		grid.gridy = 4;
 		add(infopanel, grid);
 
-		grid.gridx = 0;
-		grid.gridy = 7;
-		add(infopanel, grid);
 
 		// mengeset JFrame
 		pack();
@@ -424,6 +443,18 @@ public class TA extends JFrame {
 				infopanel.add(tfx2);
 				infopanel.add(labelY2);
 				infopanel.add(tfy2);
+			}else if(baca.equals("Kotak")) {
+				cekKotak=true;			
+				cekLingkaran=false;
+				cekPPanjang=false;
+			}else if(baca.equals("Lingkaran")) {
+				cekLingkaran=true;
+				cekKotak=false;
+				cekPPanjang=false;
+			}else if(baca.equals("Persegi Panjang")) {
+				cekPPanjang=true;
+				cekKotak=false;
+				cekLingkaran=false;
 			}
 			execute();
 		}
@@ -625,20 +656,51 @@ public class TA extends JFrame {
 	public class DrawCanvas extends JPanel {
 		@Override
 		public void paintComponent(Graphics g) {
-
 			super.paintComponent(g);
 			setBackground(warnaBackground);
-			Rectangle kotak1=new Rectangle(x1, y1, LEBAR1,PANJANG1);
-			g.setColor(warnaObjek1);
-			g.fillRect(kotak1.x, kotak1.y, kotak1.width, kotak1.height);
-			if(cekObjek==true) {
-				Rectangle kotak2=new Rectangle(x2, y2, LEBAR2, PANJANG2);
-				g.setColor(warnaObjek2);
-				g.fillRect(kotak2.x, kotak2.y, kotak2.width, kotak2.height);
-				if(kotak1.intersects(kotak2)) {
-					cekTabrak=true;
+			//shape akan dijadikan objek dahulu karena kedepannya akan menggunakan fungsi intersect
+			//intersect digunakan untuk mendeteksi collision (pergesekan antar objek)
+			if(cekKotak==true) {
+				Rectangle kotak1=new Rectangle(x1, y1, LEBAR1,PANJANG1);
+				g.setColor(warnaObjek1);
+				g.fillRect(kotak1.x, kotak1.y, kotak1.width, kotak1.height);
+				if(cekObjek==true) {
+					Rectangle kotak2=new Rectangle(x2, y2, LEBAR2, PANJANG2);
+					g.setColor(warnaObjek2);
+					g.fillRect(kotak2.x, kotak2.y, kotak2.width, kotak2.height);
+					if(kotak1.intersects(kotak2)) {
+						cekTabrak=true;
+					}
+				}
+			}else if(cekLingkaran==true) {
+				Graphics2D g2d=(Graphics2D)g;
+				Ellipse2D.Double lingkaran1=new Ellipse2D.Double(x1,y1,LEBAR1,PANJANG1);
+				g2d.setColor(warnaObjek1);
+				g2d.fill(lingkaran1);
+				if(cekObjek==true) {
+					Ellipse2D.Double lingkaran2=new Ellipse2D.Double(x2,y2,LEBAR2,PANJANG2);
+					g2d.setColor(warnaObjek2);
+					g2d.fill(lingkaran2);
+					if(lingkaran2.intersects(lingkaran1.x, lingkaran1.y, lingkaran1.width, lingkaran1.height)) {
+						cekTabrak=true;
+					}
+				}
+			}else if(cekPPanjang==true) {
+				Rectangle ppanjang1=new Rectangle(x1-15, y1, LEBAR1+30,PANJANG1);
+				g.setColor(warnaObjek1);
+				g.fillRect(ppanjang1.x, ppanjang1.y, ppanjang1.width, ppanjang1.height);
+				if(cekObjek==true) {
+					Rectangle ppanjang2=new Rectangle(x2-15, y2, LEBAR2+30, PANJANG2);
+					g.setColor(warnaObjek2);
+					g.fillRect(ppanjang2.x, ppanjang2.y, ppanjang2.width, ppanjang2.height);
+					if(ppanjang1.intersects(ppanjang2)) {
+						cekTabrak=true;
+					}
 				}
 			}
+			
+			
+			
 			g.setColor(Color.GREEN);
 			g.drawLine(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT);
 			g.drawLine(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2);
