@@ -36,7 +36,7 @@ public class TA extends JFrame {
 	private Color warnaObjek1 = Color.RED, warnaObjek2 = Color.BLUE;
 	private Color warnaBackground = Color.BLACK;
 	// boolean untuk memilih objek dan memulai program
-	private boolean objekSatu, objekDua, cekObjek;
+	private boolean objekSatu, objekDua, cekObjek, cekTabrak;
 
 	// konstruktor
 	public TA() {
@@ -59,7 +59,8 @@ public class TA extends JFrame {
 		objekSatu = new Boolean(true);
 		objekDua = new Boolean(false);
 		cekObjek = new Boolean(false);
-
+		cekTabrak=new Boolean(false);
+		
 		// inisiasi nama button
 		keatas = new JButton("Keatas");
 		kebawah = new JButton("Kebawah");
@@ -214,35 +215,96 @@ public class TA extends JFrame {
 
 			String baca = e.getActionCommand();
 			if (baca.equals("Keatas")) {
-				if (cekYatas()) {
-					if (objekSatu == true) {
+				if(cekYatas()) {
+					if (objekSatu==true) {
 						y1 -= 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(y1>y2) {
+								y2-=5;
+							}
+							else
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						y2 -= 5;
+						if(cekTabrak==true) {
+							if(y1<y2) {
+								y1-=5;
+							}
+							else 
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (baca.equals("Kebawah")) {
-				if (cekYbawah()) {
-					if (objekSatu == true) {
+				if(cekYbawah()) {
+					if (objekSatu==true) {
 						y1 += 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(y1<y2) {
+								y2+=5;
+							}
+							else 
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						y2 += 5;
+						if(cekTabrak==true) {
+							if(y1>y2) {
+								y1+=5;
+							}
+							else 
+								cekTabrak=false;
+						}
+						
 					}
 				}
 			} else if (baca.equals("Kekanan")) {
-				if (cekXkanan()) {
-					if (objekSatu == true) {
+				if(cekXkanan()) {
+					if (objekSatu==true) {
 						x1 += 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(x1<x2) {
+								x2+=5;
+							}
+							else 
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						x2 += 5;
+						if(cekTabrak==true) {
+							if(x1>x2) {
+								x1+=5;
+							}
+							else 
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (baca.equals("Kekiri")) {
-				if (cekXkiri()) {
-					if (objekSatu == true) {
+				if(cekXkiri()) {
+					if (objekSatu==true) {
 						x1 -= 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(x1>x2) {
+								x2-=5;
+							}
+							else 
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						x2 -= 5;
+						if(cekTabrak==true) {
+							if(x1<x2) {
+								x1-=5;
+							}
+							else 
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (baca.equals("Kiri Atas")) {
@@ -375,44 +437,108 @@ public class TA extends JFrame {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-			if (key == KeyEvent.VK_1) {
-				objekSatu = true;
-				objekDua = false;
-			} else if (key == KeyEvent.VK_2) {
-				objekDua = true;
-				objekSatu = false;
-			} else if (key == KeyEvent.VK_UP) {
+			if(key==KeyEvent.VK_1) {
+				objekSatu=true;
+				objekDua=false;
+				cekTabrak=false;
+			}
+			else if(key ==KeyEvent.VK_2) {
+				objekDua=true;
+				objekSatu=false;
+				cekTabrak=false;
+			}
+			else if (key == KeyEvent.VK_UP) {
 				if (cekYatas()) {
-					if (objekSatu == true) {
+					if (objekSatu==true) {
 						y1 -= 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(y1>y2) {
+								y2-=5;
+							}
+							else
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						y2 -= 5;
+						if(cekTabrak==true) {
+							if(y1<y2) {
+								y1-=5;
+							}
+							else
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (key == KeyEvent.VK_DOWN) {
 				if (cekYbawah()) {
-					if (objekSatu == true) {
+					if (objekSatu==true) {
 						y1 += 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(y1<y2) {
+								y2+=5;
+							}
+							else
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						y2 += 5;
+						if(cekTabrak==true) {
+							if(y1>y2) {
+								y1+=5;
+							}
+							else
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (key == KeyEvent.VK_RIGHT) {
-				if (cekXkanan()) {
-					if (objekSatu == true) {
+				if (cekXkanan()) {			
+					if (objekSatu==true) {
 						x1 += 5;
-					} else if (objekDua == true) {
+						if(cekTabrak==true) {
+							if(x1<x2) {
+								x2+=5;
+							}
+							else
+								cekTabrak=false;
+						}
+					}
+					else if(objekDua==true) {
 						x2 += 5;
+						if(cekTabrak==true) {
+							if(x1>x2) {
+								x1+=5;
+							}
+							else
+								cekTabrak=false;
+						}
 					}
 				}
 			} else if (key == KeyEvent.VK_LEFT) {
 				if (cekXkiri()) {
-					if (objekSatu == true) {
+					if (objekSatu==true) {
 						x1 -= 5;
-					} else if (objekDua == true) {
-						x2 -= 5;
+						if(cekTabrak==true) {
+							if(x1>x2) {
+								x2-=5;
+							}
+							else
+								cekTabrak=false;
+						}
 					}
-				}
+					else if(objekDua==true) {
+						x2 -= 5;
+						if(cekTabrak==true) {
+							if(x1<x2) {
+								x1-=5;
+							}
+							else
+								cekTabrak=false;
+						}
+					}
+				} 
 			} else if (key == KeyEvent.VK_Q) { // key listener diagonal kiri atas
 				if (cekYatas() && cekXkiri()) {
 					if (objekSatu == true) {
@@ -502,14 +628,21 @@ public class TA extends JFrame {
 
 			super.paintComponent(g);
 			setBackground(warnaBackground);
+			Rectangle kotak1=new Rectangle(x1, y1, LEBAR1,PANJANG1);
 			g.setColor(warnaObjek1);
-			g.fillRect(x1, y1, LEBAR1, PANJANG1);
-			g.drawLine(CANVAS_WIDTH / 2, 0, CANVAS_WIDTH / 2, CANVAS_HEIGHT);
-			g.drawLine(0, CANVAS_HEIGHT / 2, CANVAS_WIDTH, CANVAS_HEIGHT / 2);
-			if (cekObjek == true) {
+			g.fillRect(kotak1.x, kotak1.y, kotak1.width, kotak1.height);
+			if(cekObjek==true) {
+				Rectangle kotak2=new Rectangle(x2, y2, LEBAR2, PANJANG2);
 				g.setColor(warnaObjek2);
-				g.fillRect(x2, y2, LEBAR2, PANJANG2);
+				g.fillRect(kotak2.x, kotak2.y, kotak2.width, kotak2.height);
+				if(kotak1.intersects(kotak2)) {
+					cekTabrak=true;
+				}
 			}
+			g.setColor(Color.GREEN);
+			g.drawLine(CANVAS_WIDTH/2, 0, CANVAS_WIDTH/2, CANVAS_HEIGHT);
+			g.drawLine(0, CANVAS_HEIGHT/2, CANVAS_WIDTH, CANVAS_HEIGHT/2);
+			
 		}
 	}
 
